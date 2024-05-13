@@ -1,4 +1,7 @@
-﻿namespace RestarauntHomeTaste.Data
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RestarauntHomeTaste.Data
 {
     public class Dish
     {
@@ -10,7 +13,9 @@
         public string Description { get; set; }
         public string Allergens { get; set; }
         public decimal Weight { get; set; }
-        public DateTime DateUpdate = DateTime.Now;
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal Price { get; set; }
+        public DateTime DateUpdate { get; set; } = DateTime.Now;
        
     }
 }

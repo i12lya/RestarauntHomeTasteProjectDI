@@ -47,7 +47,7 @@ namespace RestarauntHomeTaste.Controllers
         // GET: Drinks/Create
         public IActionResult Create()
         {
-            ViewData["DrinkTypesId"] = new SelectList(_context.DrinkTypes, "Id", "Id");
+            ViewData["DrinkTypesId"] = new SelectList(_context.DrinkTypes, "Id", "Name");
             return View();
         }
 
@@ -56,15 +56,16 @@ namespace RestarauntHomeTaste.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,DrinkTypesId,ImageUrl,Description,Quantity,Price,DateUpdate")] Drink drink)
+        public async Task<IActionResult> Create([Bind("Name,DrinkTypesId,ImageUrl,Description,Quantity,Price,DateUpdate")] Drink drink)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(drink);
+                drink.DateUpdate = DateTime.Now;
+                _context.Drinks.Add(drink);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DrinkTypesId"] = new SelectList(_context.DrinkTypes, "Id", "Id", drink.DrinkTypesId);
+            ViewData["DrinkTypesId"] = new SelectList(_context.DrinkTypes, "Id", "Name", drink.DrinkTypesId);
             return View(drink);
         }
 
@@ -81,7 +82,7 @@ namespace RestarauntHomeTaste.Controllers
             {
                 return NotFound();
             }
-            ViewData["DrinkTypesId"] = new SelectList(_context.DrinkTypes, "Id", "Id", drink.DrinkTypesId);
+            ViewData["DrinkTypesId"] = new SelectList(_context.DrinkTypes, "Id", "Name", drink.DrinkTypesId);
             return View(drink);
         }
 
@@ -101,7 +102,8 @@ namespace RestarauntHomeTaste.Controllers
             {
                 try
                 {
-                    _context.Update(drink);
+                    drink.DateUpdate = DateTime.Now;
+                    _context.Drinks.Update(drink);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -117,7 +119,7 @@ namespace RestarauntHomeTaste.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DrinkTypesId"] = new SelectList(_context.DrinkTypes, "Id", "Id", drink.DrinkTypesId);
+            ViewData["DrinkTypesId"] = new SelectList(_context.DrinkTypes, "Id", "Name", drink.DrinkTypesId);
             return View(drink);
         }
 

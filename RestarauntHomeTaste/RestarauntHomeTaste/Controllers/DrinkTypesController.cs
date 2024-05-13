@@ -53,11 +53,12 @@ namespace RestarauntHomeTaste.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,DateModified")] DrinkType drinkType)
+        public async Task<IActionResult> Create([Bind("Name,DateModified")] DrinkType drinkType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(drinkType);
+                drinkType.DateModified = DateTime.Now;
+                _context.DrinkTypes.Add(drinkType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -96,7 +97,8 @@ namespace RestarauntHomeTaste.Controllers
             {
                 try
                 {
-                    _context.Update(drinkType);
+                    drinkType.DateModified = DateTime.Now;
+                    _context.DrinkTypes.Update(drinkType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

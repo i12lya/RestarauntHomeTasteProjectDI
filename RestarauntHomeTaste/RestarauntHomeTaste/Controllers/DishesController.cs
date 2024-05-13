@@ -47,7 +47,7 @@ namespace RestarauntHomeTaste.Controllers
         // GET: Dishes/Create
         public IActionResult Create()
         {
-            ViewData["DishTypesId"] = new SelectList(_context.DishTypes, "Id", "Id");
+            ViewData["DishTypesId"] = new SelectList(_context.DishTypes, "Id", "Name");
             return View();
         }
 
@@ -56,15 +56,16 @@ namespace RestarauntHomeTaste.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,DishTypesId,ImageUrl,Description,Allergens,Weight")] Dish dish)
+        public async Task<IActionResult> Create([Bind("Name,DishTypesId,ImageUrl,Description,Allergens,Weight,Price,DateUpdate")] Dish dish)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dish);
+                dish.DateUpdate = DateTime.Now;
+                _context.Dishes.Add(dish);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DishTypesId"] = new SelectList(_context.DishTypes, "Id", "Id", dish.DishTypesId);
+            ViewData["DishTypesId"] = new SelectList(_context.DishTypes, "Id", "Name", dish.DishTypesId);
             return View(dish);
         }
 
@@ -81,7 +82,7 @@ namespace RestarauntHomeTaste.Controllers
             {
                 return NotFound();
             }
-            ViewData["DishTypesId"] = new SelectList(_context.DishTypes, "Id", "Id", dish.DishTypesId);
+            ViewData["DishTypesId"] = new SelectList(_context.DishTypes, "Id", "Name", dish.DishTypesId);
             return View(dish);
         }
 
@@ -90,7 +91,7 @@ namespace RestarauntHomeTaste.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,DishTypesId,ImageUrl,Description,Allergens,Weight")] Dish dish)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,DishTypesId,ImageUrl,Description,Allergens,Weight,Price,DateUpdate")] Dish dish)
         {
             if (id != dish.Id)
             {
@@ -101,7 +102,8 @@ namespace RestarauntHomeTaste.Controllers
             {
                 try
                 {
-                    _context.Update(dish);
+                    dish.DateUpdate = DateTime.Now;
+                    _context.Dishes.Update(dish);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -117,7 +119,7 @@ namespace RestarauntHomeTaste.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DishTypesId"] = new SelectList(_context.DishTypes, "Id", "Id", dish.DishTypesId);
+            ViewData["DishTypesId"] = new SelectList(_context.DishTypes, "Id", "Name", dish.DishTypesId);
             return View(dish);
         }
 
