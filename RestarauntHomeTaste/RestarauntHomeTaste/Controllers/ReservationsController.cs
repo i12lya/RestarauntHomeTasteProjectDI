@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +11,7 @@ using RestarauntHomeTaste.Data;
 
 namespace RestarauntHomeTaste.Controllers
 {
+    [Authorize]
     public class ReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,6 +19,7 @@ namespace RestarauntHomeTaste.Controllers
         public ReservationsController(ApplicationDbContext context)
         {
             _context = context;
+            
         }
 
         // GET: Reservations
@@ -48,8 +52,8 @@ namespace RestarauntHomeTaste.Controllers
         // GET: Reservations/Create
         public IActionResult Create()
         {
-            ViewData["ClientsId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["TablesId"] = new SelectList(_context.Tables, "Id", "Id");
+            ViewData["ClientsId"] = new SelectList(_context.Users, "Id", "FirstName");
+            ViewData["TablesId"] = new SelectList(_context.Tables, "Id", "Name");
             return View();
         }
 
@@ -58,15 +62,17 @@ namespace RestarauntHomeTaste.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ClientsId,TablesId,DateReservatoion,HourReservation,GuestsCount,DateUpdate")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("ClientsId,TablesId,DateReservatoion,HourReservation,GuestsCount,DateUpdate")] Reservation reservation)
         {
+            reservation.DateReservatoion = DateTime.Now;
+     
             if (ModelState.IsValid)
             {
-                _context.Add(reservation);
+                _context.Reservations.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientsId"] = new SelectList(_context.Users, "Id", "Id", reservation.ClientsId);
+            ViewData["ClientsId"] = new SelectList(_context.Users, "Id", "FirstName", reservation.ClientsId);
             ViewData["TablesId"] = new SelectList(_context.Tables, "Id", "Id", reservation.TablesId);
             return View(reservation);
         }
@@ -84,8 +90,8 @@ namespace RestarauntHomeTaste.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClientsId"] = new SelectList(_context.Users, "Id", "Id", reservation.ClientsId);
-            ViewData["TablesId"] = new SelectList(_context.Tables, "Id", "Id", reservation.TablesId);
+            ViewData["ClientsId"] = new SelectList(_context.Users, "Id", "FirstName", reservation.ClientsId);
+            ViewData["TablesId"] = new SelectList(_context.Tables, "Id", "Name", reservation.TablesId);
             return View(reservation);
         }
 
@@ -105,7 +111,9 @@ namespace RestarauntHomeTaste.Controllers
             {
                 try
                 {
-                    _context.Update(reservation);
+                    reservation.DateReservatoion = DateTime.Now;
+                   
+                    _context.Reservations.Update(reservation);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -121,8 +129,8 @@ namespace RestarauntHomeTaste.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientsId"] = new SelectList(_context.Users, "Id", "Id", reservation.ClientsId);
-            ViewData["TablesId"] = new SelectList(_context.Tables, "Id", "Id", reservation.TablesId);
+            ViewData["ClientsId"] = new SelectList(_context.Users, "Id", "FirstName", reservation.ClientsId);
+            ViewData["TablesId"] = new SelectList(_context.Tables, "Id", "Name", reservation.TablesId);
             return View(reservation);
         }
 

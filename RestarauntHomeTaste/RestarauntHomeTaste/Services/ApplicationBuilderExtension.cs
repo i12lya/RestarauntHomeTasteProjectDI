@@ -46,8 +46,8 @@ namespace ASPShopBag.Services
             {
                 UserName = "superadmin",
                 Email = "superadmin@gmail.com",
-                FirstName = "Dian",
-                LastName = "Ivanov",
+                FirstName = "Ilya",
+                LastName = "Petrov",
                 PhoneNumber = "0899999999",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true

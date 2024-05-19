@@ -11,38 +11,42 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TableNumber)
+            Номер на масата
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.TableNumber)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
+            Снимка
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageUrl)
+            <img src="@Html.DisplayFor(model => model.ImageUrl)" width="220" />
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descrription)
+            Описание
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Descrription)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.VisitorsCount)
+            капацитет
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.VisitorsCount)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateUpdate)
+           Дата на добавяне
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DateUpdate)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+@if (User.IsInRole("Admin"))
+{
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+}
+

@@ -1,8 +1,34 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    .HomeImage {
+        position: relative;
+    }
 
+        .HomeImage img {
+            overflow: hidden;
+            justify-content: center;
+            width: 95%;
+            height: auto;
+            border-radius: 1%;
+        }
+
+        .HomeImage h1 {
+            position: absolute;
+            top: 3%;
+            left: 0%;
+            right: 0%;
+            color: white;
+            font-size: 40px;
+            text-shadow: 2px 2px black;
+        }
+</style>
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="HomeImage">
+        <img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg" />
+        <h1>
+            Ресторант „HomeTaste“
+        </h1>
+    </div>
 </div>
